@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+apply from: 'tinkerpatch.gradle'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.news.tinkerdemo"
+        minSdkVersion 15
+        targetSdkVersion 25
+        multiDexEnabled true
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+
+        release { // 正式版本的签名
+            storeFile file("F:/androidstudiokey/tinker.jks") // 密钥文件位置
+            storePassword "hrd123" // 密钥密码
+            keyAlias "hrd" // 密钥别名
+            keyPassword "hrd123" // 别名密码
+        }
+
+        debug { // debug版本的签名
+            // no keystore
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    // 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
+    // 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
+    provided("com.tinkerpatch.tinker:tinker-android-anno:1.7.11")
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.7")
+    'com.android.support.constraint:constraint-layout:1.0.2'
+    'com.android.support:multidex:1.0.1'
+    'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+}
+
+
+
